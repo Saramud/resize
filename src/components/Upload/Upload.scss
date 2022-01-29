@@ -1,0 +1,39 @@
+input[type='file'] {
+    display: none;
+}
+
+* {
+    transition: all 0.3s;
+}
+
+.input {
+    &_wrapper {
+        height: 100%;
+        position: relative;
+        padding: 15px;
+    }
+    &_fileName {
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: bold;
+        width: 250px;
+        white-space: nowrap;
+        text-transform: lowercase;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        &:hover .input_delete {
+            opacity: 1;
+        }
+    }
+    &_fileName:hover {
+        color: gray;
+    }
+    &_delete {
+        opacity: 0;
+        padding-left: 5px;
+    }
+    &_upload:hover {
+        text-align: left;
+        color: lightcoral;
+    }
+}

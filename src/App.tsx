@@ -1,12 +1,12 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.scss';
-import { Resize } from './components/Resize/Resize';
+import { Main } from './components/Main/Main';
 
 function App() {
   return (
     <div className="App">
-      <Resize/>
+      <Main/>
     </div>
   );
 }

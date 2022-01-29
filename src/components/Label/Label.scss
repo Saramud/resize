@@ -1,0 +1,26 @@
+.label {
+    display: flex;
+    position: absolute;
+    width: auto;
+    height: auto;
+    transition: none;
+    .label_fa {
+        padding-right: 5px;
+        font-size: 20px;
+        cursor: pointer;
+    }
+    input {
+        border: 2px solid lightblue;
+        border-radius: 5px;
+        appearance: none;
+        background: lightgray;
+        color: rgb(214, 18, 54);
+        width: 60px;
+        height: 20px;
+        font-size: 14px;
+        &:hover {
+            background-color: lightcoral;
+        }
+    }
+
+}

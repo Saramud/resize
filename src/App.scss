@@ -1,0 +1,13 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.App {
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  padding: 20px;
+}
+
