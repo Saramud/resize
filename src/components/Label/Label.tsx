@@ -21,7 +21,7 @@ export const Label = (props: LabelProps) => {
                 className="label_fa"
                 color={'#1ab335'}
                 icon={faTrashAlt}
-                onDoubleClick={() => handleDoubleClick(index)} />
+                onClick={() => handleDoubleClick(index)} />
             <input type='text' value={value}    
                 onChange={
                     (e: React.ChangeEvent<HTMLInputElement>) => onChangeValue(e.target.value, index)
