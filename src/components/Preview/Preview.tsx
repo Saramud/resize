@@ -104,9 +104,9 @@ export const Preview = (props: ViewPortProps) => {
     }
 
     return (
-        <div className='viewport' ref={targetRef}>
+        <div className='preview' ref={targetRef}>
             {file &&
-                <img className="preview" src={file} onClick={handlePreviewClick} />
+                <img src={file} onClick={handlePreviewClick} />
             }
             {file && labelInfo && labelInfo.map((coordinate, index) => {
                 return (
