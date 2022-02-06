@@ -8,72 +8,94 @@ interface ViewPortProps {
     event: React.ChangeEvent<HTMLInputElement> | null;
 }
 
-export interface Coordinate {
+export interface LabelInfo {
     xPosition: number,
     yPosition: number,
     value: string,
     hint: string | null,
     isSave: boolean,
+    isHidden: boolean,
+}
+
+export enum EVENT {
+    DELETE = 'delete',
+    SAVE = 'save',
+    HIDDEN = 'hidden',
+    COPY = 'copy',
 }
 
 export const Preview = (props: ViewPortProps) => {
     const { event } = props;
-    const [coordinates, setCoordinate] = React.useState<Coordinate[] | null>(null);
+    const [labelInfo, setLabelInfo] = React.useState<LabelInfo[] | null>(null);
     const targetRef = React.useRef<HTMLHeadingElement>(null);
 
     let file = null;
 
     React.useEffect(() => {
-        setCoordinate(null)
+        setLabelInfo(null)
     }, [event])
 
-    const handleClick = (e: React.MouseEvent<HTMLElement>) => {
-        const updateCoordinates = coordinates && [...coordinates];
-        const length = updateCoordinates?.length;
-        if (length && updateCoordinates[length - 1].isSave === false) {
-            return setCoordinate(list => {
-                if (list?.length) {
-                    list[length - 1].hint = 'Сохраните метку!';
-                    return [...list]
+    const handlePreviewClick = (e: React.MouseEvent<HTMLElement>) => {
+        const updateLabelInfo = labelInfo && [...labelInfo];
+        let isStopCreate = false;
+        if (updateLabelInfo?.length) {
+            updateLabelInfo.forEach(label => {
+                if (!label.isSave) {
+                    isStopCreate = true;
+                    label.hint = 'Save label!'
                 }
-                return list;
-            });
+                if (!label.value.length) {
+                    isStopCreate = true;
+                    label.hint = 'Empty label!'
+                }
+            })
+            setLabelInfo(updateLabelInfo);
         }
-        const newCoordinates = {
-            xPosition: getPercent(targetRef.current?.offsetWidth, e.nativeEvent.offsetX),
-            yPosition: getPercent(targetRef.current?.offsetHeight, e.nativeEvent.offsetY),
-            value: '',
-            hint: null,
-            isSave: false,
-        };
+        if (!isStopCreate) {
+            const newLabelInfo = {
+                xPosition: getPercent(targetRef.current?.offsetWidth, e.nativeEvent.offsetX),
+                yPosition: getPercent(targetRef.current?.offsetHeight, e.nativeEvent.offsetY),
+                value: '',
+                hint: null,
+                isSave: false,
+                isHidden: false,
+            };
 
-        setCoordinate(list => {
-            return list?.length ? [...list, newCoordinates] : [newCoordinates]
-        })
+            setLabelInfo(list => {
+                return list?.length ? [...list, newLabelInfo] : [newLabelInfo]
+            })
+        }
     }
 
-    const handleTrashClick = (index: number) => {
-        setCoordinate(list => {
-            return list?.length ? [...list.filter((el, id) => id !== index)] : list;
-        });
-    }
-
-    const handleSaveClick = (index: number) => {
-        setCoordinate(list => {
-            if (list?.length) {
-                list[index].isSave = true;
-                list[index].hint = null;
-                return [...list]
+    const handleInputClick = (index: number, event: EVENT) => {
+        let updateLabeInfo = labelInfo && [...labelInfo];
+        if (updateLabeInfo?.length) {
+            switch (event) {
+                case EVENT.DELETE:
+                    updateLabeInfo = [...updateLabeInfo.filter((el, id) => id !== index)];
+                    break;
+                case EVENT.SAVE:
+                    updateLabeInfo[index].isSave = true;
+                    updateLabeInfo[index].hint = null;
+                    break;
+                case EVENT.HIDDEN:
+                    updateLabeInfo[index].isHidden = !updateLabeInfo[index].isHidden;
+                    break;
+                case EVENT.COPY:
+                    navigator.clipboard.writeText(updateLabeInfo[index].value);
             }
-            return list;
-        });
+            setLabelInfo(updateLabeInfo);
+        }
     }
 
     const onChangeValue = (value: string, index: number) => {
-        const updateCoordinates = coordinates && [...coordinates];
-        if (updateCoordinates) {
-            updateCoordinates[index].value = value;
-            setCoordinate(updateCoordinates);
+        const updateLabelInfo = labelInfo && [...labelInfo];
+        if (updateLabelInfo) {
+            let lengthValue = updateLabelInfo[index].value.length;
+            updateLabelInfo[index].value = value;
+            updateLabelInfo[index].hint = '';
+            updateLabelInfo[index].isSave = false;
+            setLabelInfo(updateLabelInfo);
         }
     }
 
@@ -84,16 +106,15 @@ export const Preview = (props: ViewPortProps) => {
     return (
         <div className='viewport' ref={targetRef}>
             {file &&
-                <img className="preview" src={file} onClick={handleClick} />
+                <img className="preview" src={file} onClick={handlePreviewClick} />
             }
-            {file && coordinates && coordinates.map((coordinate, index) => {
+            {file && labelInfo && labelInfo.map((coordinate, index) => {
                 return (
                     <Label
                         labelInfo={coordinate}
                         key={index}
                         index={index}
-                        handleTrashClick={handleTrashClick}
-                        handleSaveClick={handleSaveClick}
+                        handleInputClick={handleInputClick}
                         onChangeValue={onChangeValue} />
                 )
             })

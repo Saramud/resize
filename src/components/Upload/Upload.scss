@@ -2,10 +2,6 @@ input[type='file'] {
     display: none;
 }
 
-* {
-    transition: all 0.3s;
-}
-
 .input {
     &_wrapper {
         height: 100%;
@@ -22,6 +18,7 @@ input[type='file'] {
         overflow: hidden;
         text-overflow: ellipsis;
         &:hover .input_delete {
+            transition: opacity 0.3s;
             opacity: 1;
         }
     }
@@ -30,6 +27,7 @@ input[type='file'] {
     }
     &_delete {
         opacity: 0;
+        transition: opacity 0.3s;
         padding-left: 5px;
     }
     &_upload:hover {

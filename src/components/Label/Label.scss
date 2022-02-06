@@ -1,41 +1,71 @@
+
 .label {
     display: flex;
     flex-direction: column;
-
     position: absolute;
-    width: auto;
-    height: auto;
-    transition: none;
-    .label_fa {
-        padding-left: 5px;
-        font-size: 20px;
+    min-width: 100px;
+    max-width: 0px;
+    transition: all 0ms;
+    .point {
+        position: absolute;
+        top: -8px;
+        left: -6px;
         cursor: pointer;
-        display: none;
-    }
-    &:hover .label_fa {
-        display: inline;
-    }
-    input {
-        border: 1px solid lightblue;
-        background: lightgray;
-        color: rgb(214, 18, 54);
-        width: 60px;
-        height: 20px;
-        font-size: 14px;
-        padding-left: 5px;
-        &:hover {
-            background-color: lightcoral;
-        }
+        opacity: 0.8;
+        color: #1ab335;
+        
+    };
+    &:hover .point {
+        opacity: 1;
     }
     .inputWrapper {
         display: flex;
+        flex-direction: column;
+        margin: 10px 0 0 10px;
+        position: absolute;
+        div {
+            display: flex;
+        }
+        .label_fa {
+            padding-left: 5px;
+            font-size: 20px;
+            cursor: pointer;
+            display: none;
+        }
+        &:hover .label_fa {
+            display: inline;
+        }
+        .fa_copy {
+            position: absolute;
+            display: inline;
+            color:  lightcoral;
+        }
+        input {
+            border: 1px solid lightblue;
+            background: lightgray;
+            color: rgb(214, 18, 54);
+            width: 140px;
+            height: 20px;
+            font-size: 14px;
+            padding-left: 20px;
+            &:hover {
+                background-color: lightcoral;
+            }
+            &:hover + .fa_copy {
+                color: lightgray;
+            } 
+        }
     }
     .hint {
-        color: rgb(80, 219, 76);
+        color: rgb(76, 228, 89);
         font-size: 10px;
-        line-height: 0;
+        line-height: 0
     };
 }
-.labelValidation input{
+.labelValidation .inputWrapper input{
     border: 2px solid rgb(228, 76, 76);
+}
+
+.labelValidation .point{
+    color: rgb(226, 30, 30);
 }
